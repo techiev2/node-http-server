@@ -132,10 +132,11 @@ class Server {
           Object.keys(this._routes).map(route => {
             if (handler) return;
             matcher = new RegExp(route);
-            // match = url.match(route);
             match = matcher.exec(url);
             if (match) {
               handler = this._routes[route];
+              request.query = request.query || {};
+              Object.assign(request.query, match.groups || {});
             }
           });
           handler = handler || this.handler404;
