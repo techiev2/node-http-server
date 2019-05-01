@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home</title>
+</head>
+<body>
+  <div id="container">
+    Hello! <span id="username" class="text-username"></span>
+  </div>
+  <script type="text/javascript">
+    const apiRoot = `${window.location.origin}/api`;
+    fetch(`${apiRoot}/users/testuser`)
+      .then(res => res.json())
+      .then(data => data.data)
+      .then(user => {
+        document.querySelector('#username').innerText = user.username;
+      });
+  </script>
+</body>
+</html>
