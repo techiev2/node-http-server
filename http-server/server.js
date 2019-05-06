@@ -116,6 +116,10 @@ class Server {
         return response.end();
       }
 
+      if (!response.render) {
+        response.render = (status, data) => { httpResponder(response, status, data); }
+      }
+
       Promise.all(this._middlewares.map(_ => _(request, response)))
         .then(() => {
           // Fallback if responder has not been added to middlewares
