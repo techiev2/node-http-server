@@ -161,7 +161,7 @@ class Server {
               Object.assign(request.query, match.groups || {});
             }
           });
-          handler = handler || this.handler404;
+          handler = handler || this.handler404.bind(this);
           handler(request, response);
         });
     });
@@ -172,6 +172,13 @@ class Server {
     if (!response.respond) {
       setResponder(response);
     }
+    if (this._responseType === 'html') {
+      response.writeHead(404, {
+        'Content-Type': 'text/html'
+      });
+      return response.end(`Route ${request.url} not found`);
+    }
+    response.respond(404, 'Route not found');
     response.respond(404, 'Route not found');
   }
 
