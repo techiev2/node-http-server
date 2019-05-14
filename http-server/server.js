@@ -121,8 +121,8 @@ class Server {
       }
 
       let cookies = {};
-      const { cookie } = request.headers;
-      if (!cookie) return cookies;
+      const cookie = request.headers && request.headers.cookie ?
+        request.headers.cookie || '' : '';
       cookie.split('; ').map(cookieEl => {
         let cookieVal;
         cookieEl = cookieEl.split('=');
