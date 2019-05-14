@@ -120,6 +120,24 @@ class Server {
         response.render = (status, data) => { httpResponder(response, status, data); }
       }
 
+      let cookies = {};
+      const { cookie } = request.headers;
+      if (!cookie) return cookies;
+      cookie.split('; ').map(cookieEl => {
+        let cookieVal;
+        cookieEl = cookieEl.split('=');
+        if (cookieEl.length !== 2) return;
+        // TODO: Parse the cookie value
+        cookieVal =  cookieEl[1];
+        try {
+          cookieVal = JSON.parse(cookieVal);
+        } catch (err) {
+          //
+        }
+        cookies[cookieEl[0]] = cookieVal;
+      });
+      request.cookies = cookies;
+
       Promise.all(this._middlewares.map(_ => _(request, response)))
         .then(() => {
           // Fallback if responder has not been added to middlewares
