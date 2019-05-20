@@ -79,11 +79,19 @@ class Server {
     });
   }
 
+  addCORSHeaders(headers) {
+    if (headers && headers.constructor === Array) {
+      this.corsHeaders.push(...headers);
+    }
+    return this;
+  }
+
   constructor(routes) {
     this._routes = {};
     this._responseType = 'json';
     this._staticRoots = [];
     routes = routes || {};
+    this.corsHeaders = [];
     Object.keys(routes).map(route => {
       let handler = routes[route];
       if (route === '/') {
@@ -107,6 +115,9 @@ class Server {
         'Access-Control-Allow-Methods': 'GET, OPTIONS, PUT, POST',
         'Server': 'NodeJS HTTP API v1.0.0'
       };
+      if (this.corsHeaders.length > 0) {
+        headers['Access-Control-Allow-Headers'] = this.corsHeaders.join(',');
+      }
       Object.keys(headers).map(key => {
         response.setHeader(key, headers[key]);
       });
