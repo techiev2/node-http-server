@@ -179,7 +179,6 @@ class Server {
       return response.end(`Route ${request.url} not found`);
     }
     response.respond(404, 'Route not found');
-    response.respond(404, 'Route not found');
   }
 
   start(port=5000) {
