@@ -172,6 +172,14 @@ class Server {
               Object.assign(request.query, match.groups || {});
             }
           });
+          response.redirect = (status, location) => {
+            if (status.constructor !== Number) {
+              location = status;
+              status = 301;
+            }
+            response.writeHead(status, {"Location": location});
+            response.end();
+          };
           handler = handler || this.handler404.bind(this);
           handler(request, response);
         });
