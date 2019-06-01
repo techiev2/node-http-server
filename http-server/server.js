@@ -16,9 +16,19 @@ function renderTemplate(response, template, data) {
       `);
       return response.end();
     }
+    data = data || {};
+    page = page.toString();
+    Object.keys(data).map(key => {
+      let val = data[key];
+      let matcher = new RegExp(`{{\\s*${key}\\s*}}`, 'gmi');
+      let match = matcher.exec(page);
+      if (match) {
+        page = page.replace(matcher, val);
+      }
+    });
     response.statusCode = 200;
     response.write(page);
-    response.end()
+    response.end();
   });
 }
 
