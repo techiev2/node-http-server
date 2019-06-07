@@ -5,31 +5,48 @@ const { resolve } = require('path');
 
 const { httpResponder } = require('./middlewares');
 
+const { renderTemplateWithData } = require('./helpers');
+
 
 function renderTemplate(response, template, data) {
-  readFile(template, (err, page) => {
-    if (err) {
+  renderTemplateWithData(template, data)
+    .then(page => {
+      response.statusCode = 200;
+      response.write(page);
+      return response.end();
+    })
+    .catch(error => {
       response.statusCode = 500;
       response.write(`
         Server error: <br >
+        ${error}
         Error opening template at ${template}
       `);
       return response.end();
-    }
-    data = data || {};
-    page = page.toString();
-    Object.keys(data).map(key => {
-      let val = data[key];
-      let matcher = new RegExp(`{{\\s*${key}\\s*}}`, 'gmi');
-      let match = matcher.exec(page);
-      if (match) {
-        page = page.replace(matcher, val);
-      }
-    });
-    response.statusCode = 200;
-    response.write(page);
-    response.end();
-  });
+    })
+  // readFile(template, (err, page) => {
+  //   if (err) {
+  //     response.statusCode = 500;
+  //     response.write(`
+  //       Server error: <br >
+  //       Error opening template at ${template}
+  //     `);
+  //     return response.end();
+  //   }
+  //   data = data || {};
+  //   page = page.toString();
+  //   Object.keys(data).map(key => {
+  //     let val = data[key];
+  //     let matcher = new RegExp(`{{\\s*${key}\\s*}}`, 'gmi');
+  //     let match = matcher.exec(page);
+  //     if (match) {
+  //       page = page.replace(matcher, val);
+  //     }
+  //   });
+  //   response.statusCode = 200;
+  //   response.write(page);
+  //   response.end();
+  // });
 }
 
 
