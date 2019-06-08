@@ -12,10 +12,11 @@ const renderTemplateWithData = (path, data) => {
       Object.keys(data).map(key => {
         let val = data[key];
         let matcher = new RegExp(`{{\\s*${key}\\s*}}`, 'gmi');
-        let match = matcher.exec(page);
-        if (match) {
-          page = page.replace(matcher, val);
-        }
+        let match;
+        do {
+          match = matcher.exec(s);
+          if (match) { page = page.replace(matcher, val); }
+        } while (match);
       });
       resolve(page);
     });
