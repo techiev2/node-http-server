@@ -14,7 +14,7 @@ const renderTemplateWithData = (path, data) => {
         let matcher = new RegExp(`{{\\s*${key}\\s*}}`, 'gmi');
         let match;
         do {
-          match = matcher.exec(s);
+          match = matcher.exec(page);
           if (match) { page = page.replace(matcher, val); }
         } while (match);
       });
