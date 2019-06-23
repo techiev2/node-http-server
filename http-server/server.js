@@ -69,20 +69,25 @@ class Server {
   }
 
   staticHandler(path, response) {
+    // TODO: Find these start paths from this._staticRoots and run a loop
     if (path.startsWith('/js/')) {
       path = path.split('/js/')[1];
     }
     if (path.startsWith('/css/')) {
       path = path.split('/css/')[1];
     }
-    // TEMP
+    if (path.startsWith('/assets/')) {
+      path = path.split('/assets/')[1];
+    }
+    //TEMP
     if (path.startsWith('/')) {
       path = path.split('/').slice(1).join('/');
     }
+
     this._staticRoots = this._staticRoots.map(_ => resolve(_))
     let validPaths = this._staticRoots
       .map(_ => `${_}/${path}`)
-      .filter(_ => existsSync(_))
+      .filter(_ => existsSync(_) || existsSync(`${_}/${path}`))
 
     path = validPaths.length > 0 ? validPaths[0] : null;
 
@@ -98,7 +103,8 @@ class Server {
       }
       // Find a way to detect this a la codecs in Python
       let contentType = path.endsWith('.js') ? 'application/json' :
-        path.endsWith('.css') ? 'text/css' : 'text/plain';
+        path.endsWith('.css') ? 'text/css' :
+        path.endsWith('.svg') ? 'image/svg+xml': 'text/plain';
       response.setHeader('Content-Type', contentType);
       response.statusCode = 200;
       response.write(content);
@@ -148,7 +154,7 @@ class Server {
       Object.keys(headers).map(key => {
         response.setHeader(key, headers[key]);
       });
-  
+
       if (request.method === 'OPTIONS') {
         response.writeHead(204);
         return response.end();
@@ -184,7 +190,9 @@ class Server {
             this.setResponder(response);
           }
           let { url } = request;
-          let isStatic = url.endsWith('.js') || url.endsWith('.css');
+          let isStatic = url.endsWith('.js') || url.endsWith('.css') ||
+            url.endsWith('.svg') || url.endsWith('.ttf') ||
+            url.endsWith('.woff');
           let handler, matcher, match;
           if (isStatic) {
             return this.staticHandler(url, response);
