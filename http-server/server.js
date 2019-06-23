@@ -119,6 +119,11 @@ class Server {
     return this;
   }
 
+  setProperty(name, value) {
+    Object.assign(this._props, { [name]: value });
+    return this;
+  }
+
   constructor(routes) {
     this._routes = {};
     this._responseType = 'json';
@@ -134,6 +139,7 @@ class Server {
       this._routes[route] = handler;
     });
     this._middlewares = [];
+    this._props = {};
 
     this._server = createServer((request, response) => {
 
@@ -182,10 +188,17 @@ class Server {
       });
       request.cookies = cookies;
 
+      const server = this;
+
       Promise.all(this._middlewares.map(_ => _(request, response)))
         .then(() => {
           // Fallback if responder has not been added to middlewares
           // via the serialize middleware
+
+          Object.keys(server._props).map(key => {
+            request[`${key}`] = server._props[`${key}`];
+          });
+
           if (!response.respond) {
             this.setResponder(response);
           }
@@ -217,6 +230,9 @@ class Server {
           };
           handler = handler || this.handler404.bind(this);
           handler(request, response);
+        })
+        .catch(error => {
+          response.respond(500, `Server error: ${error}`);
         });
     });
     return this;
