@@ -24,29 +24,6 @@ function renderTemplate(response, template, data) {
       `);
       return response.end();
     })
-  // readFile(template, (err, page) => {
-  //   if (err) {
-  //     response.statusCode = 500;
-  //     response.write(`
-  //       Server error: <br >
-  //       Error opening template at ${template}
-  //     `);
-  //     return response.end();
-  //   }
-  //   data = data || {};
-  //   page = page.toString();
-  //   Object.keys(data).map(key => {
-  //     let val = data[key];
-  //     let matcher = new RegExp(`{{\\s*${key}\\s*}}`, 'gmi');
-  //     let match = matcher.exec(page);
-  //     if (match) {
-  //       page = page.replace(matcher, val);
-  //     }
-  //   });
-  //   response.statusCode = 200;
-  //   response.write(page);
-  //   response.end();
-  // });
 }
 
 
@@ -187,6 +164,14 @@ class Server {
         cookies[cookieEl[0]] = cookieVal;
       });
       request.cookies = cookies;
+
+      const { rawHeaders } = request;
+      const hKeys =
+        rawHeaders.filter(_ => rawHeaders.indexOf(_) % 2 === 0)
+          .map(_ => [_, rawHeaders[rawHeaders.indexOf(_) + 1]])
+      request.headers =  Object.assign(
+        ...hKeys.map(([key, val]) => ({[key]: val}))
+      );
 
       const server = this;
 
