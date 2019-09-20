@@ -166,9 +166,10 @@ class Server {
       request.cookies = cookies;
 
       const { rawHeaders } = request;
-      const hKeys =
+      let hKeys =
         rawHeaders.filter(_ => rawHeaders.indexOf(_) % 2 === 0)
           .map(_ => [_, rawHeaders[rawHeaders.indexOf(_) + 1]])
+      hKeys = hKeys || [];
       request.headers =  Object.assign(
         ...hKeys.map(([key, val]) => ({[key]: val}))
       );
