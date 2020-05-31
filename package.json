@@ -1,0 +1,22 @@
+{
+  "name": "node-http-server",
+  "version": "1.0.14",
+  "description": "A barebones http server abstraction for NodeJS",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techiev2/node-http-server.git"
+  },
+  "author": "Sriram Velamur <sriram.velamur@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/techiev2/node-http-server/issues"
+  },
+  "homepage": "https://github.com/techiev2/node-http-server#readme"
+}
