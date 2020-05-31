@@ -1,5 +1,5 @@
 {
-  "name": "node-http-server",
+  "name": "@techiev2/node_http_server",
   "version": "1.0.14",
   "description": "A barebones http server abstraction for NodeJS",
   "main": "index.js",
