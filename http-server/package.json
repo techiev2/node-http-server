@@ -1,0 +1,25 @@
+{
+  "name": "@techiev2/node_http_server",
+  "version": "1.0.16",
+  "description": "A barebones http server abstraction for NodeJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techiev2/node-http-server.git"
+  },
+  "keywords": [
+    "http",
+    "server",
+    "express"
+  ],
+  "author": "Sriram Velamur <sriram.velamur@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/techiev2/node-http-server/issues"
+  },
+  "homepage": "https://github.com/techiev2/node-http-server#readme"
+}
