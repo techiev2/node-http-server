@@ -67,7 +67,6 @@ class Server {
       .filter(_ => existsSync(_) || existsSync(`${_}/${path}`))
 
     path = validPaths.length > 0 ? validPaths[0] : null;
-
     if (!path) {
       response.statusCode = 404;
       return response.end();
@@ -191,7 +190,9 @@ class Server {
           let { url } = request;
           let isStatic = url.endsWith('.js') || url.endsWith('.css') ||
             url.endsWith('.svg') || url.endsWith('.ttf') ||
-            url.endsWith('.woff');
+            url.endsWith('.woff') || url.endsWith('jpg') ||
+            url.endsWith('png') || url.endsWith('webp') ||
+            url.endsWith('ico');
           let handler, matcher, match;
           if (isStatic) {
             return this.staticHandler(url, response);
