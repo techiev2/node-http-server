@@ -170,7 +170,7 @@ class Server {
           .map(_ => [_, rawHeaders[rawHeaders.indexOf(_) + 1]])
       hKeys = hKeys || [];
       request.headers =  Object.assign(
-        ...hKeys.map(([key, val]) => ({[key]: val}))
+        ...(hKeys || []).map(([key, val]) => ({[key]: val}))
       );
 
       const server = this;
