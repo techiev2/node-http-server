@@ -5,16 +5,58 @@
 </head>
 <body>
   <div id="container">
-    Hello! <span id="username" class="text-username"></span>
+    {%include topbar.html}
+    <div class="contents">
+      Hello! <span id="username" class="text-username"></span>
+    </div>
   </div>
   <script type="text/javascript">
     const apiRoot = `${window.location.origin}/api`;
-    fetch(`${apiRoot}/users/testuser`)
+    const username = location.pathname.split('/users/')[1] || 'world!';
+    const url = `${apiRoot}/users/${username}`;
+    console.log({url});
+    fetch(url)
       .then(res => res.json())
       .then(data => data.data)
       .then(user => {
         document.querySelector('#username').innerText = user.username;
+      })
+      .catch((error) => {
+        console.error(error);
+        document.querySelector('#username').innerText = 'world!';
       });
   </script>
+  <style>
+    html, body {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      padding: 0;
+      outline: 0;
+      margin: 0;
+      border: 0;
+      font-size: 1.15rem;
+      font-family: Roboto, sans-serif;
+      font-weight: 100;
+    }
+    #container {
+      display: grid;
+      grid-template-rows: 50px 4fr;
+      grid-row-gap: 15px;
+    }
+    .topbar {
+      align-items: center;
+      line-height: 50px;
+      background: rgba(10, 10, 10, 0.85);
+      box-shadow: 1px 0 0 3px rgba(10, 10, 10, 0.5);
+      color: rgba(200, 200, 200, 0.8);
+      text-align: center;
+    }
+    .contents .text-username {
+      font-weight: bold;
+    }
+  </style>
 </body>
 </html>
