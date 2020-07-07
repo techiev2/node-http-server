@@ -1,7 +1,7 @@
 'use strict';
 
 const { readFile, readFileSync } = require('fs');
-const { dirname } = require('path');
+const { dirname, normalize } = require('path');
 
 
 const renderTemplateWithData = async (path, data) => {
@@ -20,7 +20,8 @@ const renderTemplateWithData = async (path, data) => {
         if ($include) {
           try {
             $file = $include[1].trim();
-            $file = readFileSync(`${dirname(path)}/${$file}`);
+            let $$file = normalize(`${path}/${$file}`);
+            $file = readFileSync($$file);
             page = page.replace($include[0], $file);
           } catch (error) {
             let $msg;
@@ -30,6 +31,7 @@ const renderTemplateWithData = async (path, data) => {
                 $include[0],
                 `${$include[0]}<script>console.error("${$msg}");</script>`,
               );
+              console.log({error});
             } else {
               console.log(error.message);
             }
@@ -41,7 +43,6 @@ const renderTemplateWithData = async (path, data) => {
         const includeMatcher = new RegExp(
             `\{\%\s*(.*?)\s*\}`, 'gmi',
         );
-        console.log({includeMatcher});
         let $includes;
         do {
           $includes = includeMatcher.exec(page);
