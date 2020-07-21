@@ -15,12 +15,13 @@ const renderTemplateWithData = async (path, data) => {
       );
       let $include;
       let $file;
+      const $root = dirname(path);
       do {
         $include = includeMatcher.exec(page);
         if ($include) {
           try {
             $file = $include[1].trim();
-            let $$file = normalize(`${path}/${$file}`);
+            let $$file = normalize(`${$root}/${$file}`);
             $file = readFileSync($$file);
             page = page.replace($include[0], $file);
           } catch (error) {
