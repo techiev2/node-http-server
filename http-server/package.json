@@ -1,6 +1,6 @@
 {
   "name": "@techiev2/node_http_server",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "A barebones http server abstraction for NodeJS",
   "main": "index.js",
   "scripts": {
