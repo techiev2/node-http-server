@@ -29,6 +29,16 @@ export function serialize(request, response) {
         });
         request.data = Object.keys(data).length < 1 ? null : data;
       }
+      if (request.data) {
+        Object.entries(request.data).map(([key, val]) => {
+          try {
+            val = JSON.parse(val);
+          } catch (err) {
+            //
+          }
+          Object.assign(request.data, {[`${key}`]: val});
+        });
+      }
       resolve(request, response);
     });
   });

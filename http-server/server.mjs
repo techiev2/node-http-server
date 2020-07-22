@@ -205,6 +205,14 @@ export class Server {
               handler = this._routes[route];
               request.query = request.query || {};
               Object.assign(request.query, match.groups || {});
+              Object.entries(request.query).map(([key, val]) => {
+                try {
+                  val = JSON.parse(val);
+                } catch (err) {
+                  //
+                }
+                Object.assign(request.query, {[`${key}`]: val});
+              });
             }
           });
           response.redirect = (status, location) => {
