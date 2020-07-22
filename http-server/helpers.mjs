@@ -1,10 +1,10 @@
 'use strict';
 
-const { readFile, readFileSync } = require('fs');
-const { dirname, normalize } = require('path');
+import {readFile, readFileSync} from 'fs';
+import {dirname, normalize} from 'path';
 
 
-const renderTemplateWithData = async (path, data) => {
+export const renderTemplateWithData = async (path, data) => {
   return new Promise(async (resolve, reject) => {
     readFile(path, (err, page) => {
       if (err) { return reject(err); }
@@ -59,6 +59,3 @@ const renderTemplateWithData = async (path, data) => {
     });
   });
 };
-
-
-module.exports = { renderTemplateWithData };

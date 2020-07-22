@@ -1,6 +1,6 @@
 'use strict';
 
-const { Server } = require('../http-server');
+import {Server} from '../http-server';
 
 function UserController(request, response) {
   response.respond(200, request.query);

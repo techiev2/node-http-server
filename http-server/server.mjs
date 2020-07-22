@@ -1,11 +1,11 @@
 'use strict';
-const { createServer } = require('http');
-const { readFile, existsSync } = require('fs');
-const { resolve } = require('path');
+import { createServer } from 'http';
+import { readFile, existsSync } from 'fs';
+import {resolve} from 'path';
 
-const { httpResponder } = require('./middlewares');
+import {httpResponder} from './middlewares';
 
-const { renderTemplateWithData } = require('./helpers');
+import {renderTemplateWithData} from './helpers';
 
 
 function renderTemplate(response, template, data) {
@@ -27,7 +27,7 @@ function renderTemplate(response, template, data) {
 }
 
 
-class Server {
+export class Server {
 
   setResponder(response) {
     response.respond = (status, data) => {
@@ -255,6 +255,3 @@ class Server {
   }
 
 }
-
-
-module.exports = { Server };

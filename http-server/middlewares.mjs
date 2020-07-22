@@ -1,6 +1,6 @@
 'use strict';
 
-const httpResponder = (response, status, data) => {
+export const httpResponder = (response, status, data) => {
   response.statusCode = status;
   let key = status > 199 && status < 400 ? 'data' : 'message';
   data = {
@@ -10,7 +10,7 @@ const httpResponder = (response, status, data) => {
   response.end();
 };
 
-function serialize(request, response) {
+export function serialize(request, response) {
   return new Promise(resolve => {
     response.respond = (status, data) => {
       httpResponder(response, status, data);
@@ -33,5 +33,3 @@ function serialize(request, response) {
     });
   });
 }
-
-module.exports = { serialize, httpResponder };
