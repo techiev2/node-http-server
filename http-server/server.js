@@ -169,10 +169,14 @@ class Server {
         rawHeaders.filter(_ => rawHeaders.indexOf(_) % 2 === 0)
           .map(_ => [_, rawHeaders[rawHeaders.indexOf(_) + 1]])
       hKeys = hKeys || [];
-      request.headers =  Object.assign(
-        ...(hKeys || []).map(([key, val]) => ({[key]: val}))
-      );
-
+      request.headers = {};
+      const oldKeys = Object.keys(
+        request.headers
+      ).map((k) => k.toLowerCase());
+      hKeys.map((headerMap) => {
+        let [key, val] = headerMap;
+        Object.assign(request.headers, {[key]: val});
+      });
       const server = this;
 
       Promise.all(this._middlewares.map(_ => _(request, response)))
@@ -258,3 +262,4 @@ class Server {
 
 
 module.exports = { Server };
+
