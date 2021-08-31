@@ -18,16 +18,20 @@ function serialize(request, response) {
     let content = '';
     request.on('data', chunk => content += chunk);
     request.on('end', () => {
-      try {
-        request.data = JSON.parse(content);
-      } catch (err) {
-        let data = {};
-        content.split('&').map(_ => {
-          _ = _.split('=');
-          if (_.length !== 2) return;
-          data[_[0]] = _[1];
-        });
-        request.data = Object.keys(data).length < 1 ? null : data;
+      if (request.headers['Content-Type'] === 'text/plain') {
+        request.data = content;
+      } else {
+        try {
+          request.data = JSON.parse(content);
+        } catch (err) {
+          let data = {};
+          content.split('&').map(_ => {
+            _ = _.split('=');
+            if (_.length !== 2) return;
+            data[_[0]] = _[1];
+          });
+          request.data = Object.keys(data).length < 1 ? null : data;
+        }
       }
       resolve(request, response);
     });
