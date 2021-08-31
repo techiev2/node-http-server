@@ -244,7 +244,7 @@ class Server {
 
   start(port=5000) {
     console.log(`Listening on http://localhost:${port}`);
-    this._server.listen(port);
+    this._server.listen(port, '0.0.0.0');
   }
 
   addMiddleware(middlware) {
